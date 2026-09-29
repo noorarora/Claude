@@ -53,6 +53,13 @@ SIGNAL_PATTERNS: list[tuple[str, str, str, int, str]] = [
         "high",
     ),
     (
+        r"\b(?:send|reply|share|provide)\b.{0,24}\b(?:otp|one[- ]time (?:code|password)|verification code|security code|mfa code)\b",
+        "One-time code request",
+        "It asks the reader to disclose a one-time authentication or verification code.",
+        22,
+        "high",
+    ),
+    (
         r"\b(suspended|locked|unusual sign-in|avoid deletion|expires)\b",
         "Threat or consequence",
         "It threatens account loss or another negative consequence.",
