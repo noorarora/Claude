@@ -32,4 +32,8 @@ def test_detects_request_to_share_one_time_code():
 
     assert score > 0
     assert any(signal.label == "One-time code request" for signal in signals)
-    assert any(signal.severity == "high" for signal in signals if signal.label == "One-time code request")
+    assert any(
+        signal.severity == "high"
+        for signal in signals
+        if signal.label == "One-time code request"
+    )
