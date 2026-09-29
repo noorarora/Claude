@@ -22,3 +22,14 @@ def test_score_stays_within_public_api_range():
     assert 0 <= score <= 100
     assert 0 <= probability <= 1
 
+
+def test_detects_request_to_share_one_time_code():
+    classifier = PhishingClassifier()
+
+    score, _, signals = classifier.analyse(
+        "Urgent security check: reply with your one-time code so we can unlock your account."
+    )
+
+    assert score > 0
+    assert any(signal.label == "One-time code request" for signal in signals)
+    assert any(signal.severity == "high" for signal in signals if signal.label == "One-time code request")
