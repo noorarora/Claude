@@ -30,3 +30,23 @@ class HistoryItem(BaseModel):
     verdict: str
     created_at: datetime
 
+
+class RAGRequest(BaseModel):
+    query: str = Field(min_length=5, max_length=5_000)
+    top_k: int = Field(default=3, ge=1, le=5)
+
+
+class RAGSource(BaseModel):
+    id: str
+    title: str
+    source: str
+    url: str
+    content: str
+    score: float = Field(ge=0)
+
+
+class RAGResponse(BaseModel):
+    query: str
+    answer: str
+    generated_by: str
+    sources: list[RAGSource]
