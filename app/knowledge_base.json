@@ -1,0 +1,44 @@
+[
+  {
+    "id": "spot-phishing",
+    "title": "Spotting phishing attempts",
+    "source": "Australian Cyber Security Centre",
+    "url": "https://www.cyber.gov.au/threats/types-threats/phishing",
+    "content": "Phishing messages often impersonate trusted organisations and try to create urgency, fear or curiosity. Treat unexpected requests for passwords, payment details, verification codes, QR-code scans or account logins as suspicious. Check the sender independently and use the organisation's official website or app instead of links supplied in the message."
+  },
+  {
+    "id": "safe-verification",
+    "title": "Verify suspicious requests safely",
+    "source": "Australian Cyber Security Centre",
+    "url": "https://www.cyber.gov.au/protect-yourself/spotting-scams",
+    "content": "Do not rely on contact details, links or phone numbers contained in a suspicious message. Verify the request through a trusted channel you find independently, such as the organisation's official website, mobile app or a known phone number. Unexpected pressure to act immediately is a common warning sign."
+  },
+  {
+    "id": "clicked-link",
+    "title": "If you clicked a suspicious link or installed software",
+    "source": "Australian Cyber Security Centre",
+    "url": "https://www.cyber.gov.au/report-and-recover/recover-from/scams",
+    "content": "If you opened a suspicious link or installed software, stop interacting with the message, remove suspicious software and run a reputable security scan. If the device is managed by an employer or university, contact the IT or security team promptly so they can investigate and contain possible compromise."
+  },
+  {
+    "id": "credentials-exposed",
+    "title": "If credentials or personal information were exposed",
+    "source": "Australian Cyber Security Centre",
+    "url": "https://www.cyber.gov.au/threats/types-threats/phishing",
+    "content": "If you entered a password or exposed personal information, change affected passwords from a trusted device and secure any other accounts that reuse the same credentials. Review account activity and strengthen authentication, including multi-factor authentication where available. Contact relevant service providers if sensitive identity or financial information may be at risk."
+  },
+  {
+    "id": "money-lost",
+    "title": "If money was sent or financial details were exposed",
+    "source": "Australian Cyber Security Centre",
+    "url": "https://www.cyber.gov.au/report-and-recover/recover-from/scams",
+    "content": "If money was transferred or banking details were exposed, contact the bank or financial institution immediately. Ask them to review suspicious transactions and follow their instructions for securing the account. Preserve relevant messages and transaction details because they may be useful when reporting the incident."
+  },
+  {
+    "id": "report-australia",
+    "title": "Reporting phishing and cyber incidents in Australia",
+    "source": "Australian Cyber Security Centre",
+    "url": "https://www.cyber.gov.au/threats/types-threats/phishing",
+    "content": "Suspicious scams can be reported to Scamwatch, while cyber security incidents can be reported through ReportCyber when appropriate. Reporting also helps authorities identify related campaigns. Keep a record of what happened, when it happened and the actions already taken."
+  }
+]
