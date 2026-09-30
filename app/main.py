@@ -7,10 +7,20 @@ from fastapi.staticfiles import StaticFiles
 
 from app.classifier import PhishingClassifier
 from app.database import initialise_database, recent_analyses, save_analysis
-from app.schemas import AnalysisRequest, AnalysisResponse, HistoryItem, Signal
+from app.rag import PhishingRAG
+from app.schemas import (
+    AnalysisRequest,
+    AnalysisResponse,
+    HistoryItem,
+    RAGRequest,
+    RAGResponse,
+    RAGSource,
+    Signal,
+)
 
 BASE_DIR = Path(__file__).resolve().parent
 classifier = PhishingClassifier()
+rag = PhishingRAG()
 
 
 @asynccontextmanager
@@ -21,8 +31,8 @@ async def lifespan(_: FastAPI):
 
 app = FastAPI(
     title="PhishGuard AI",
-    description="Explainable phishing-risk triage for suspicious messages.",
-    version="0.1.0",
+    description="Explainable phishing-risk triage with retrieval-augmented safety guidance.",
+    version="0.2.0",
     lifespan=lifespan,
 )
 app.mount("/static", StaticFiles(directory=BASE_DIR / "static"), name="static")
@@ -65,6 +75,17 @@ def analyse_message(request: AnalysisRequest) -> AnalysisResponse:
         ],
         recommendation=recommendation,
         created_at=record["created_at"],
+    )
+
+
+@app.post("/api/rag", response_model=RAGResponse)
+def rag_guidance(request: RAGRequest) -> RAGResponse:
+    answer, sources, generated_by = rag.answer(request.query, top_k=request.top_k)
+    return RAGResponse(
+        query=request.query,
+        answer=answer,
+        generated_by=generated_by,
+        sources=[RAGSource(**source) for source in sources],
     )
 
 
