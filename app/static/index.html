@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="Explainable phishing-risk analysis for suspicious messages." />
+    <meta name="description" content="Explainable phishing-risk analysis with retrieval-augmented safety guidance." />
     <title>PhishGuard AI</title>
     <link rel="stylesheet" href="/static/styles.css" />
   </head>
@@ -14,9 +14,9 @@
     </header>
     <main>
       <section class="hero">
-        <p class="eyebrow">Explainable message security</p>
+        <p class="eyebrow">Explainable phishing defence + RAG</p>
         <h1>Check before you click.</h1>
-        <p>Paste a suspicious email or text. PhishGuard combines a lightweight ML model with transparent security signals.</p>
+        <p>Analyse suspicious emails and texts with a lightweight ML model, transparent security signals, and grounded phishing-safety guidance retrieved from a curated knowledge base.</p>
       </section>
 
       <section class="workspace" aria-label="Message analysis">
@@ -41,6 +41,35 @@
         </div>
       </section>
 
+      <section class="rag-section" aria-label="Retrieval augmented phishing guidance">
+        <div class="section-heading rag-heading">
+          <div>
+            <p class="eyebrow">Grounded guidance</p>
+            <h2>Ask PhishGuard RAG</h2>
+          </div>
+          <span class="rag-badge">Top-k retrieval + optional Claude generation</span>
+        </div>
+        <div class="rag-grid">
+          <div class="panel rag-panel">
+            <form id="rag-form">
+              <label for="rag-query">What happened, or what do you want to verify?</label>
+              <textarea class="compact" id="rag-query" minlength="5" maxlength="5000" required placeholder="Example: I entered my password on a suspicious login page. What should I do next?"></textarea>
+              <div class="form-footer">
+                <small>Answers are grounded in retrieved defensive guidance.</small>
+                <button id="ask-button" type="submit">Get guidance</button>
+              </div>
+            </form>
+          </div>
+          <div id="rag-result" class="panel rag-output empty" aria-live="polite">
+            <div class="empty-state">
+              <div class="shield" aria-hidden="true">R</div>
+              <h2>Grounded, not guessed</h2>
+              <p>Relevant guidance and its source links will appear here.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section class="history-section">
         <div class="section-heading">
           <div><p class="eyebrow">Local audit trail</p><h2>Recent analyses</h2></div>
@@ -53,4 +82,3 @@
     <script src="/static/app.js" defer></script>
   </body>
 </html>
-
