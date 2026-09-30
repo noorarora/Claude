@@ -4,6 +4,10 @@ const count = document.querySelector("#character-count");
 const result = document.querySelector("#result");
 const button = document.querySelector("#analyse-button");
 const historyContainer = document.querySelector("#history");
+const ragForm = document.querySelector("#rag-form");
+const ragQuery = document.querySelector("#rag-query");
+const ragButton = document.querySelector("#ask-button");
+const ragResult = document.querySelector("#rag-result");
 
 message.addEventListener("input", () => {
   count.textContent = `${message.value.length.toLocaleString()} / 10,000`;
@@ -32,6 +36,30 @@ function renderResult(data) {
     </div>
     <div class="signals">${signals}</div>
     <p class="recommendation"><strong>Recommended action:</strong> ${escapeHtml(data.recommendation)}</p>`;
+}
+
+function renderRag(data) {
+  const sources = data.sources.map((source) => `
+    <article class="source-card">
+      <div>
+        <strong>${escapeHtml(source.title)}</strong>
+        <p>${escapeHtml(source.source)} · relevance ${Number(source.score).toFixed(3)}</p>
+      </div>
+      <a href="${escapeHtml(source.url)}" target="_blank" rel="noreferrer">Source</a>
+    </article>`).join("");
+
+  const generationLabel = data.generated_by === "claude-grounded"
+    ? "Claude-grounded answer"
+    : "Local retrieval fallback";
+
+  ragResult.classList.remove("empty");
+  ragResult.innerHTML = `
+    <div class="rag-answer-header">
+      <p class="eyebrow">${escapeHtml(generationLabel)}</p>
+      <span class="verdict">${data.sources.length} sources</span>
+    </div>
+    <p class="rag-answer">${escapeHtml(data.answer)}</p>
+    <div class="source-list">${sources}</div>`;
 }
 
 function escapeHtml(value) {
@@ -78,6 +106,26 @@ form.addEventListener("submit", async (event) => {
   }
 });
 
+ragForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  ragButton.disabled = true;
+  ragButton.textContent = "Retrieving…";
+  try {
+    const response = await fetch("/api/rag", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ query: ragQuery.value, top_k: 3 }),
+    });
+    if (!response.ok) throw new Error("Guidance could not be generated. Please try again.");
+    renderRag(await response.json());
+  } catch (error) {
+    ragResult.classList.add("empty");
+    ragResult.innerHTML = `<div class="empty-state"><h2>Unable to retrieve guidance</h2><p>${escapeHtml(error.message)}</p></div>`;
+  } finally {
+    ragButton.disabled = false;
+    ragButton.textContent = "Get guidance";
+  }
+});
+
 document.querySelector("#refresh-history").addEventListener("click", loadHistory);
 loadHistory();
-
