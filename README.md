@@ -44,8 +44,8 @@ Browser UI ── FastAPI ── RAG query ──> TF-IDF retriever ──> phis
 
 1. A user asks a phishing-safety question or describes what happened.
 2. The query is vectorised with the same local TF-IDF vocabulary as the curated knowledge base.
-3. Cosine similarity ranks the most relevant guidance documents.
-4. The top-k documents are returned as traceable evidence.
+3. Cosine similarity ranks the most relevant guidance documents; zero-overlap documents are excluded.
+4. Up to top-k matching documents are returned as traceable evidence. With no vocabulary overlap, the API returns an empty source list and `generated_by: "no-evidence"`, gives a cautious verification suggestion, and skips the LLM call. A positive lexical score is not a guarantee of relevance.
 5. If `ANTHROPIC_API_KEY` and `ANTHROPIC_MODEL` are configured, Claude receives only the retrieved context plus a defensive system prompt and generates a grounded answer.
 6. Without LLM credentials, the app still works and returns an evidence-based retrieval fallback.
 

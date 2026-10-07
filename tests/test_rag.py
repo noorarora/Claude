@@ -41,3 +41,35 @@ def test_rag_endpoint_validates_top_k(client):
     )
 
     assert response.status_code == 422
+
+
+def test_unrelated_query_has_no_sources_and_skips_generation(monkeypatch):
+    rag = PhishingRAG()
+
+    def unexpected_generation(*args):
+        raise AssertionError("Generation must not run without evidence")
+
+    monkeypatch.setattr(rag, "_generate_with_claude", unexpected_generation)
+    answer, sources, mode = rag.answer("zxqv blorptastic")
+    assert sources == []
+    assert mode == "no-evidence"
+    assert "No relevant guidance" in answer
+
+
+def test_unrelated_query_endpoint(client):
+    response = client.post("/api/rag", json={"query": "zxqv blorptastic"})
+    assert response.status_code == 200
+    assert response.json()["sources"] == []
+    assert response.json()["generated_by"] == "no-evidence"
+
+
+def test_retrieval_excludes_zero_overlap_documents(tmp_path):
+    import json
+
+    path = tmp_path / "knowledge.json"
+    path.write_text(json.dumps([
+        {"id": "a", "title": "Passwords", "content": "credentials password"},
+        {"id": "b", "title": "Bananas", "content": "orchard fruit"},
+    ]))
+    results = PhishingRAG(path).retrieve("password", top_k=3)
+    assert [source["id"] for source in results] == ["a"]

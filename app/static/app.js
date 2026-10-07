@@ -50,7 +50,9 @@ function renderRag(data) {
 
   const generationLabel = data.generated_by === "claude-grounded"
     ? "Claude-grounded answer"
-    : "Local retrieval fallback";
+    : data.generated_by === "no-evidence"
+      ? "No matching guidance"
+      : "Local retrieval fallback";
 
   ragResult.classList.remove("empty");
   ragResult.innerHTML = `
